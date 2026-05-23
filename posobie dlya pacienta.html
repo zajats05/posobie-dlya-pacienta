@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Интерактивное пособие | Профилактика ожирения</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #e6f0f5;
+            padding: 20px;
+            color: #1a3b4f;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        /* карточки */
+        .card {
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            padding: 20px 24px;
+            margin-bottom: 24px;
+            transition: 0.2s;
+        }
+        h1 {
+            font-size: 1.9rem;
+            margin-bottom: 6px;
+            color: #175d7c;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        h2 {
+            font-size: 1.4rem;
+            margin: 0 0 12px 0;
+            border-left: 5px solid #2c9b6e;
+            padding-left: 15px;
+            color: #1a5a6e;
+        }
+        h3 {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin: 15px 0 8px 0;
+            color: #1f6d8c;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .calc-group {
+            margin-bottom: 16px;
+        }
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 6px;
+            color: #2a5f6e;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 1rem;
+            border: 1px solid #cbdde6;
+            border-radius: 18px;
+            background: #fefefe;
+            transition: 0.1s;
+        }
+        button {
+            background: #2c9b6e;
+            border: none;
+            color: white;
+            font-weight: bold;
+            padding: 12px 18px;
+            border-radius: 40px;
+            font-size: 1rem;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+            width: auto;
+        }
+        button:hover {
+            background: #217a55;
+            transform: scale(0.98);
+        }
+        .result {
+            background: #eef3fa;
+            padding: 14px;
+            border-radius: 18px;
+            margin-top: 15px;
+            font-size: 1rem;
+            border-left: 4px solid #2c9b6e;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .green { background: #c6f0d4; color: #176b3a; }
+        .yellow { background: #fff1c1; color: #aa6f1e; }
+        .red { background: #ffe0db; color: #bc2a1c; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        th, td {
+            border: 1px solid #cde0e8;
+            padding: 10px 8px;
+            text-align: center;
+        }
+        th {
+            background: #d9eaf2;
+        }
+        .food-log {
+            background: #fafcfd;
+            border-radius: 20px;
+            padding: 10px;
+        }
+        .food-item {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #e2edf2;
+            padding: 8px 0;
+        }
+        .note {
+            background: #fffbe6;
+            border-left: 5px solid #f5b042;
+            padding: 12px 15px;
+            border-radius: 20px;
+            margin: 20px 0 0;
+        }
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #4b7b8c;
+            margin-top: 30px;
+        }
+        @media (max-width: 640px) {
+            body { padding: 12px; }
+            .card { padding: 16px; }
+            button { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card" style="background: linear-gradient(135deg, #eaf9f0, white);">
+        <h1>📘 ЗДОРОВЫЙ ВЕС — ЗДОРОВАЯ ЖИЗНЬ</h1>
+        <p style="font-size: 1.1rem;">Интерактивное пособие по профилактике ожирения и снижению веса</p>
+        <p style="color:#436f7e;">✔ Рассчитайте свой ИМТ ✔ Узнайте норму воды ✔ Ведите дневник питания ✔ Отслеживайте прогресс</p>
+    </div>
+
+    <!-- Ряд калькуляторов -->
+    <div class="grid-2">
+        <!-- Калькулятор ИМТ -->
+        <div class="card">
+            <h2>⚖️ Калькулятор ИМТ</h2>
+            <div class="calc-group"><label>Ваш рост (см)</label><input type="number" id="height" placeholder="например 165"></div>
+            <div class="calc-group"><label>Ваш вес (кг)</label><input type="number" id="weight" placeholder="например 78"></div>
+            <button id="calcBMI">Рассчитать ИМТ</button>
+            <div id="bmiResult" class="result">▶ Введите рост и вес</div>
+        </div>
+        <!-- Калькулятор талии / риска -->
+        <div class="card">
+            <h2>📏 Окружность талии</h2>
+            <div class="calc-group"><label>Окружность талии (см)</label><input type="number" id="waist" placeholder="измерьте на уровне пупка"></div>
+            <div class="calc-group"><label>Ваш пол</label><select id="gender"><option value="female">Женщина</option><option value="male">Мужчина</option></select></div>
+            <button id="checkWaist">Оценить риск</button>
+            <div id="waistResult" class="result">▶ Введите талию и пол</div>
+        </div>
+        <!-- Водный калькулятор -->
+        <div class="card">
+            <h2>💧 Вода на каждый день</h2>
+            <div class="calc-group"><label>Ваш вес (кг)</label><input type="number" id="waterWeight" placeholder="ваш вес"></div>
+            <button id="calcWater">Сколько пить?</button>
+            <div id="waterResult" class="result">▶ Укажите вес, чтобы узнать дневную норму</div>
+        </div>
+    </div>
+
+    <!-- ИНТЕРАКТИВНЫЙ ДНЕВНИК ПИТАНИЯ (добавление записей) -->
+    <div class="card">
+        <h2>🍎 Дневник питания (сегодня)</h2>
+        <p style="margin-bottom: 10px;">Записывайте приёмы пищи, программа посчитает порции овощей/фруктов.</p>
+        <div class="grid-2" style="gap: 10px;">
+            <input type="text" id="mealName" placeholder="Что съели? (каша, суп, яблоко...)" style="margin-bottom: 0;">
+            <input type="number" id="vegPortions" placeholder="Порции овощей/фруктов (0-5)" step="0.5" min="0" style="margin-bottom: 0;">
+            <button id="addMealBtn" style="margin-top:0;">➕ Добавить запись</button>
+        </div>
+        <div id="foodList" class="food-log" style="margin-top: 20px;">
+            <div class="food-item"><span>📌 Пока нет записей</span></div>
+        </div>
+        <div id="vegSummary" class="result" style="margin-top: 12px;">🥗 Овощей/фруктов за день: — порций</div>
+        <button id="clearFoodBtn" style="background:#5f8b9c;">🗑 Очистить дневник</button>
+    </div>
+
+    <!-- ТАБЛИЦА САМОКОНТРОЛЯ (редактируемая) -->
+    <div class="card">
+        <h2>📅 Таблица самоконтроля</h2>
+        <p>Записывайте вес, талию, активность каждую неделю (ячейки можно редактировать).</p>
+        <div style="overflow-x: auto;">
+            <table id="selfControlTable">
+                <thead>
+                    <tr><th>Неделя</th><th>Вес (кг)</th><th>Талия (см)</th><th>Активность (мин/нед)</th><th>✅ Соблюдение диеты (✔/✘)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Неделя 1</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                    <tr><td>Неделя 2</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                    <tr><td>Неделя 3</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                    <tr><td>Неделя 4</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                </tbody>
+            </table>
+        </div>
+        <button id="saveTableBtn">💾 Сохранить данные (локально)</button>
+        <button id="resetTableBtn" style="background:#b0c4ce;">⟳ Сбросить таблицу</button>
+        <div class="note">✨ Совет: кликните на любую ячейку — сразу меняйте показатели. Ваши данные сохранятся в телефоне/компьютере.</div>
+    </div>
+
+    <!-- Мотивация и полезные фразы -->
+    <div class="card">
+        <h2>🎯 Совет дня</h2>
+        <div id="motivationText" class="result" style="font-size:1rem; font-weight:500;">«Маленький шаг сегодня — это огромный прогресс через месяц»</div>
+        <button id="newAdviceBtn">🔁 Новый совет</button>
+        <div class="note" style="margin-top: 15px;">
+            <strong>📌 Что ещё поможет:</strong><br>
+            • Спать 7–8 часов (недосып мешает худеть)<br>
+            • Замените лифт на лестницу<br>
+            • Ешьте из маленьких тарелок<br>
+            • Не пейте калорийные напитки
+        </div>
+    </div>
+    <footer>Медицинская сестра кабинета доврачебного осмотра | Пособие разработано на основе клинических рекомендаций</footer>
+</div>
+
+<script>
+    // 1. КАЛЬКУЛЯТОР ИМТ
+    document.getElementById('calcBMI').addEventListener('click', function(){
+        let h = parseFloat(document.getElementById('height').value)/100;
+        let w = parseFloat(document.getElementById('weight').value);
+        if(!h || !w || h<=0 || w<=0){ document.getElementById('bmiResult').innerHTML = '❌ Введите корректный рост и вес'; return; }
+        let imt = w/(h*h);
+        let cat = '';
+        let colorClass = '';
+        if(imt<18.5){ cat='Дефицит массы тела'; colorClass='yellow'; }
+        else if(imt<25){ cat='✅ Нормальный вес'; colorClass='green'; }
+        else if(imt<30){ cat='⚠️ Избыточная масса тела. Рекомендуется снижение веса'; colorClass='yellow'; }
+        else if(imt<35){ cat='🔴 Ожирение I степени. Обратитесь к врачу'; colorClass='red'; }
+        else if(imt<40){ cat='🔴 Ожирение II степени'; colorClass='red'; }
+        else { cat='🔴 Ожирение III степени (помощь врача обязательна)'; colorClass='red'; }
+        document.getElementById('bmiResult').innerHTML = `<span class="badge ${colorClass}">ИМТ ${imt.toFixed(1)}</span> — ${cat}`;
+    });
+    // 2. Окружность талии
+    document.getElementById('checkWaist').addEventListener('click', function(){
+        let waist = parseFloat(document.getElementById('waist').value);
+        let gender = document.getElementById('gender').value;
+        if(!waist || waist<30){ document.getElementById('waistResult').innerHTML = '❌ Введите окружность талии (см)'; return; }
+        let isHigh = false;
+        if(gender==='female' && waist>80) isHigh=true;
+        if(gender==='male' && waist>94) isHigh=true;
+        let msg = (isHigh) ? '⚠️ ВЫСОКИЙ РИСК: абдоминальное ожирение. Жир вокруг органов опасен для сердца и обмена веществ.' : '✅ Ниже нормы. Отличный показатель!';
+        document.getElementById('waistResult').innerHTML = msg + ` (норма: Ж ≤80 см, М ≤94 см)`;
+    });
+    // 3. Вода
+    document.getElementById('calcWater').addEventListener('click', function(){
+        let kg = parseFloat(document.getElementById('waterWeight').value);
+        if(!kg || kg<20){ document.getElementById('waterResult').innerHTML = '❌ Укажите вес'; return; }
+        let water = (kg*30)/1000;
+        document.getElementById('waterResult').innerHTML = `💧 Ваша норма воды: ${water.toFixed(1)} литра в день (30 мл на 1 кг веса)`;
+    });
+
+    // 4. ИНТЕРАКТИВНЫЙ ДНЕВНИК ПИТАНИЯ с подсчетом овощей
+    let foodEntries = []; // {name, veg}
+    function renderFoodDiary(){
+        let container = document.getElementById('foodList');
+        if(!container) return;
+        if(foodEntries.length===0){
+            container.innerHTML = '<div class="food-item">📌 Пока нет записей</div>';
+            document.getElementById('vegSummary').innerHTML = '🥗 Овощей/фруктов за день: — порций';
+            return;
+        }
+        let totalVeg = 0;
+        let html = '';
+        for(let i=0;i<foodEntries.length;i++){
+            let e = foodEntries[i];
+            totalVeg += (e.veg || 0);
+            html += `<div class="food-item"><span>🍽 ${e.name}</span><span>🥕 ${e.veg} порц.</span></div>`;
+        }
+        container.innerHTML = html;
+        let vegMessage = `🥗 Овощей/фруктов за день: ${totalVeg} порций (рекомендация: ≥5 порций = 400 г)`;
+        if(totalVeg>=5) vegMessage += ' ✅ Отлично!';
+        else if(totalVeg>=3) vegMessage += ' 🌱 Хорошо, можно добавить ещё овощей.';
+        else vegMessage += ' 🧃 Мало клетчатки — добавьте овощи к каждому приёму пищи.';
+        document.getElementById('vegSummary').innerHTML = vegMessage;
+    }
+    document.getElementById('addMealBtn').addEventListener('click', function(){
+        let name = document.getElementById('mealName').value.trim();
+        let veg = parseFloat(document.getElementById('vegPortions').value);
+        if(name===''){ alert('Напишите, что съели'); return; }
+        if(isNaN(veg)) veg=0;
+        foodEntries.push({name: name, veg: veg});
+        document.getElementById('mealName').value = '';
+        document.getElementById('vegPortions').value = '';
+        renderFoodDiary();
+    });
+    document.getElementById('clearFoodBtn').addEventListener('click', function(){
+        if(confirm('Очистить дневник питания?')){
+            foodEntries = [];
+            renderFoodDiary();
+        }
+    });
+
+    // 5. ТАБЛИЦА САМОКОНТРОЛЯ с сохранением в localStorage
+    function saveTableData(){
+        let table = document.getElementById('selfControlTable');
+        let data = [];
+        for(let i=1; i<table.rows.length; i++){ // headers skip
+            let row = table.rows[i];
+            let rowData = [];
+            for(let j=0; j<row.cells.length; j++){
+                rowData.push(row.cells[j].innerText);
+            }
+            data.push(rowData);
+        }
+        localStorage.setItem('patientWeightTable', JSON.stringify(data));
+        alert('Таблица сохранена! Данные останутся на этом устройстве.');
+    }
+    function loadTableData(){
+        let saved = localStorage.getItem('patientWeightTable');
+        if(!saved) return;
+        let data = JSON.parse(saved);
+        let table = document.getElementById('selfControlTable');
+        for(let i=0; i<data.length && i+1<table.rows.length; i++){
+            let row = table.rows[i+1];
+            for(let j=0; j<data[i].length && j<row.cells.length; j++){
+                row.cells[j].innerText = data[i][j];
+            }
+        }
+    }
+    document.getElementById('saveTableBtn').addEventListener('click', saveTableData);
+    document.getElementById('resetTableBtn').addEventListener('click', function(){
+        if(confirm('Сбросить все недели?')){
+            localStorage.removeItem('patientWeightTable');
+            let table = document.getElementById('selfControlTable');
+            for(let i=1; i<table.rows.length; i++){
+                for(let j=0; j<table.rows[i].cells.length; j++){
+                    table.rows[i].cells[j].innerText = '';
+                }
+            }
+        }
+    });
+    
+    // 6. Мотивация (совет дня)
+    const adviceList = [
+        '🥦 Каждый килограмм сниженного веса уменьшает нагрузку на суставы на 4 кг.',
+        '💤 Сон менее 7 часов повышает риск ожирения на 30%. Ложитесь спать до 23:00.',
+        '🍏 Замените сладкую газировку на воду с лимоном — это минус 3-5 кг в год.',
+        '🏃‍♀️ 15 минут быстрой ходьбы после ужина снижают сахар крови на 10-15%.',
+        '🧂 Ограничьте соль — уйдут отёки и снизится давление за 2 недели.',
+        '📉 Даже минус 5-10% веса снижает риск инфаркта на 20% и диабета на 40%.',
+        '🍽 Ешьте из маленькой тарелки — порции станут меньше незаметно.',
+        '🚶‍♂️ Выходите на одну остановку раньше — 2000 шагов в день = минус 2 кг в год.',
+        '💧 Стакан воды за 20 минут до еды уменьшает аппетит и калорийность обеда на 13%',
+        '🎯 Ставьте цель на неделю: минус 0.5 кг. Маленькие победы = большой результат.'
+    ];
+    function getRandomAdvice(){
+        let idx = Math.floor(Math.random() * adviceList.length);
+        document.getElementById('motivationText').innerHTML = `✨ «${adviceList[idx]}»`;
+    }
+    document.getElementById('newAdviceBtn').addEventListener('click', getRandomAdvice);
+    getRandomAdvice();
+    
+    // Загрузить таблицу при запуске
+    loadTableData();
+    renderFoodDiary();
+</script>
+</body>
+</html>
